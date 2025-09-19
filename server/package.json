@@ -1,0 +1,23 @@
+{
+  "name": "oauth-playground-server",
+  "version": "1.0.0",
+  "description": "OAuth 2.0 Authorization Server simulado",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.2",
+    "crypto": "^1.0.1",
+    "uuid": "^9.0.1",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["oauth", "authorization-server", "simulator"],
+  "license": "MIT"
+}
