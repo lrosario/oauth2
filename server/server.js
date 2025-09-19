@@ -6,22 +6,33 @@ const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
+// Production CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://oauth-playground-client.onrender.com'] 
+    : ['http://localhost:3000'],
+  credentials: true
+};
 
 // Configuração de middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Chave secreta para assinar JWTs
-const JWT_SECRET = 'oauth-playground-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'oauth-playground-secret-key';
+
+// Determine redirect URI based on environment
+const REDIRECT_URI = process.env.CLIENT_REDIRECT_URI || 'http://localhost:3000/callback';
 
 // Armazenamento em memória (em produção seria um banco de dados)
 const clients = {
   'demo-client': {
     client_id: 'demo-client',
     client_secret: 'demo-secret',
-    redirect_uris: ['http://localhost:3000/callback'],
+    redirect_uris: [REDIRECT_URI],
     grant_types: ['authorization_code', 'client_credentials']
   }
 };
@@ -349,7 +360,7 @@ app.get('/oauth/clients/demo', (req, res) => {
   res.json({
     client_id: 'demo-client',
     client_secret: 'demo-secret',
-    redirect_uris: ['http://localhost:3000/callback'],
+    redirect_uris: [REDIRECT_URI],
     grant_types: ['authorization_code', 'client_credentials'],
     scopes: ['read', 'write']
   });
